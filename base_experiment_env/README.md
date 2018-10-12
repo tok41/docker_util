@@ -49,3 +49,20 @@ jupyter nbextensions_configurator enable --user
   c.NotebookApp.token = ''
   ```
 
+### jupyter lab
+- 拡張機能をインストールするために、node.jsの導入が必要
+```
+apt-get update
+apt-get install nodejs
+apt-get install npm
+npm cache clean
+npm install n -g
+n stable
+ln -sf /usr/local/bin/node /usr/bin/node
+```
+#### 欲しい拡張機能
+- Table of Contents
+  - https://github.com/jupyterlab/jupyterlab-toc
+  ```
+  jupyter labextension install @jupyterlab/toc
+  ```
