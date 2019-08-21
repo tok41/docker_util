@@ -29,6 +29,7 @@ RUN pip install pandas==0.24.2
 RUN pip install scikit-learn==0.20.3
 RUN pip install seaborn==0.9.0
 
+
 RUN echo "umask 0 0 0 2" >> ~/.bashrc
 
-CMD /bin/bash
+CMD jupyter lab --port 8888 --ip=0.0.0.0 --allow-root
