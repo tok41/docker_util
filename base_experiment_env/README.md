@@ -1,68 +1,45 @@
-# 基本環境のDockerfile
+# base_experimental_env
 
-- 基本となる環境を作るためのDockerfile
+- 基本のPython環境を作るためのDockerfile
+  - 公開されてるものでも良いけど、練習がてら
 
-## 準備
-- 必要ファイルのコピー等
+## Base Image
+
 ```
-$ bash preparation.sh
+python:3
+```
+
+## install applications
+### apt
+```
+emacs
+git
+wget
+nodejs
+```
+
+### pip
+```
+numpy
+scipy
+matplotlib
+ipython
+scikit-learn
+pandas
+seaborn
+jupyterlab
 ```
 
 ## Build
-- 以下のコマンド
+
 ```
 docker build -t {image name} {path of Dockerfile}
-$ docker build -t tok-base-emacs ./
+$ docker build -t jupyterlab:test ./
 ```
 
-## ToDo
-### Emacs
-- emacsのライブラリをコピーしているがバージョンの違いやコンパイル環境が違うのでコピーしてきても使えない
-  - ADDコマンドを削除して手でインストールするように変更する(ライブラリをすぐに使えるようにするのは諦める)
+## Run
 
-### jupyter
-- nbextensionの有効化ができていない
-  - 以下のコマンドを実行する
 ```
-jupyter contrib nbextension install --user
-jupyter nbextensions_configurator enable --user
+docker run -d -p {host port}:{container port} jupyterlab:test2 /bin/bash -c "jupyter lab --allow-root --ip 0.0.0.0 --NotebookApp.token='{token}'"
 ```
-- jupyterのconfig作成と設定
-  - 作成
-  ```
-  jupyter notebook --generate-config
-  ```
-  - ipをアドホックに全てのip受け入れる
-  ```
-  c.NotebookApp.ip = '0.0.0.0'
-  ```
-  - portを48888に変更する
-  ```
-  c.NotebookApp.port = 48888
-  ```
-  - suでの実行を許可
-  ```
-  c.NotebookApp.allow_root = True
-  ```
-  - login tokenを入力しない
-  ```
-  c.NotebookApp.token = ''
-  ```
 
-### jupyter lab
-- 拡張機能をインストールするために、node.jsの導入が必要
-```
-apt-get update
-apt-get install nodejs
-apt-get install npm
-npm cache clean
-npm install n -g
-n stable
-ln -sf /usr/local/bin/node /usr/bin/node
-```
-#### 欲しい拡張機能
-- Table of Contents
-  - https://github.com/jupyterlab/jupyterlab-toc
-  ```
-  jupyter labextension install @jupyterlab/toc
-  ```
