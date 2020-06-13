@@ -1,29 +1,26 @@
-FROM ubuntu:16.04
+FROM python:3
 
-MAINTAINER tok41
+# mkdir & cd
+WORKDIR /work
 
 RUN apt-get update && apt-get -y upgrade
-
 RUN apt-get install -y \
-	vim \
 	emacs \
 	git \
-	wget \
-	python3 \
-	python3-dev \
-	python3-pip
+	wget
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
 
-RUN git config --global user.email "hippy.hikky@gmail.com"
-RUN git config --global user.name "tok41"
+RUN pip install --upgrade pip
+RUN pip install numpy \
+	scipy \
+	matplotlib \
+	ipython \
+	scikit-learn \
+	pandas \
+	seaborn
+RUN pip install jupyterlab
 
-WORKDIR /root
-RUN git clone https://github.com/tok41/dot_emacs_d.git .emacs.d
-ADD emacs_elpa.tgz .emacs.d/
+RUN jupyter serverextension enable --py jupyterlab
 
-RUN mkdir workspace
-COPY requirements.txt workspace/
-
-WORKDIR /root/workspace
-RUN pip3 install --upgrade pip
-RUN pip install -r requirements.txt
 
