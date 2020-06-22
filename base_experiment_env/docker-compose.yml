@@ -1,0 +1,12 @@
+version: '3'
+
+# アプリケーションの各要素を記述していく
+services:
+    # servicesの名称はなんでも良い
+    python:
+        image: py-test # buildはDockerfileからbuildすることを表す。imageを指定するとビルド済みimageを利用.
+        ports: # 公開用のポート, host:container
+            - "8899:8888"
+        volumes: # host:container
+            - ~/reservoir/docker_test/share:/work/share
+        command: jupyter lab --allow-root --no-browser --ip 0.0.0.0 --NotebookApp.token='pass'
